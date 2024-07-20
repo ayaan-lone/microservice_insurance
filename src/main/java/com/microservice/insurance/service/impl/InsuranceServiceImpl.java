@@ -44,7 +44,7 @@ public class InsuranceServiceImpl implements InsuranceService {
 		insurance.setIssued(true);
 		insurance.setAmount(amount);
 		insuranceRepository.save(insurance);
-		return "Insurance issued successfully.";
+		return ConstantUtil.USER_INSURED_SUCCESSFULLY;
 	}
 
 	private boolean isUserAlreadyInsured(Long userId) {
