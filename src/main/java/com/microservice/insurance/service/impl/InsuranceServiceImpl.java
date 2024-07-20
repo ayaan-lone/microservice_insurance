@@ -27,17 +27,15 @@ public class InsuranceServiceImpl implements InsuranceService {
 
 	@Override
 	public boolean isUserEligibleForInsurance(Long userId) {
-		return userClientHandler.verifyUser(userId);
+		return !isUserAlreadyInsured(userId) && userClientHandler.verifyUser(userId);
 	}
 
 	@Override
 	public String issueInsurance(Long userId, Double amount) throws InsuranceApplicationException {
 		if (!isUserEligibleForInsurance(userId)) {
-			throw new InsuranceApplicationException(HttpStatus.NOT_FOUND, ConstantUtil.USER_NOT_FOUND);
+			throw new InsuranceApplicationException(HttpStatus.NOT_FOUND, ConstantUtil.USER_NOT_ELIGIBLE);
 		}
-		if (isUserAlreadyInsured(userId)) {
-			throw new InsuranceApplicationException(HttpStatus.BAD_REQUEST, ConstantUtil.USER_ALREADY_INSURED);
-		}
+		
 		// Logic to issue insurance
 		Insurance insurance = new Insurance();
 		insurance.setUserId(userId);
