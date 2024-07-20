@@ -5,11 +5,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
+import com.microservice.insurance.client.UserClientHandler;
 import com.microservice.insurance.dao.InsuranceRepository;
 import com.microservice.insurance.entity.Insurance;
 import com.microservice.insurance.exception.InsuranceApplicationException;
@@ -22,16 +20,14 @@ public class InsuranceServiceImpl implements InsuranceService {
 	private String verifyUserUrl;
 
 	@Autowired
-	private RestTemplate restTemplate;
+	private UserClientHandler userClientHandler;
 
 	@Autowired
 	private InsuranceRepository insuranceRepository;
 
 	@Override
 	public boolean isUserEligibleForInsurance(Long userId) {
-		String url = UriComponentsBuilder.fromHttpUrl(verifyUserUrl).queryParam("userId", userId).toUriString();
-		ResponseEntity<Boolean> response = restTemplate.getForEntity(url, Boolean.class);
-		return response.getBody() != null && response.getBody();
+		return userClientHandler.verifyUser(userId);
 	}
 
 	@Override
