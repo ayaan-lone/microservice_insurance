@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.microservice.insurance.client.UserClientHandler;
 import com.microservice.insurance.dao.InsuranceRepository;
 import com.microservice.insurance.entity.Insurance;
 import com.microservice.insurance.exception.InsuranceApplicationException;
@@ -20,14 +19,11 @@ public class InsuranceServiceImpl implements InsuranceService {
 	private String verifyUserUrl;
 
 	@Autowired
-	private UserClientHandler userClientHandler;
-
-	@Autowired
 	private InsuranceRepository insuranceRepository;
 
 	@Override
 	public boolean isUserEligibleForInsurance(Long userId) {
-		return !isUserAlreadyInsured(userId) && userClientHandler.verifyUser(userId);
+		return !isUserAlreadyInsured(userId);
 	}
 
 	@Override
